@@ -1,0 +1,7 @@
+- @lookups.each do |lookup|
+  %div.well.well-large
+    %span.lookup_span= link_to escape_javascript(lookup.domain), lookup
+    
+%legend Help us improve by adding more lookups
+
+= link_to 'Create Lookup', new_lookup_path

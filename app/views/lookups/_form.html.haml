@@ -1,0 +1,35 @@
+= simple_form_for(@lookup) do |f|
+  = f.error_notification
+  
+  %legend You are the star of our society !
+
+  %div.alert.alert-info#xpath_info_well
+    Please refer
+    %a{ :href => 'http://www.w3schools.com/xpath/default.asp', :target => '_blank' } XPath Tutorial
+    to add the correct XPaths for 
+    %em 
+      Title, Description, and Job Requirement.
+  %div.alert
+    %small
+      If URL of the job is
+      %a https://www.jobs.company.com/browse?jobid=33
+      , choose ONLY 
+      %span.label.label-important
+        company
+      in the 
+      %span{ :style => 'color:tomato'}
+        domain
+      field. Leave out everything else such as 
+      %em
+        protocol, subdomain, public suffix, query string, etc.       
+    
+  .form-inputs
+    = f.input :domain
+    = f.input :company
+    = f.input :title
+    = f.input :description
+    = f.input :location
+    = f.input :example_page
+
+  .form-actions
+    = f.button :submit
