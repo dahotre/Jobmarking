@@ -1,6 +1,7 @@
+
+%div.well.well-large
 - @lookups.each do |lookup|
-  %div.well.well-large
-    %span.lookup_span= link_to escape_javascript(lookup.domain), lookup
+  %span.lookup_span= link_to escape_javascript(lookup.domain), lookup
     
 %legend Help us improve by adding more lookups
 

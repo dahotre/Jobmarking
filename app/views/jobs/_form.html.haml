@@ -1,0 +1,12 @@
+= simple_form_for(@job) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :url
+    = f.input :title
+    = f.input :description
+    = f.input :location
+    = f.input :company
+
+  .form-actions
+    = f.button :submit

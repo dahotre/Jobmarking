@@ -1,14 +1,16 @@
 class Lookup
   include Mongoid::Document
-  field :domain, type: String
-  field :company, type: String
-  field :title, type: String
-  field :description, type: String
-  field :location, type: String
+  include Mongoid::Timestamps
+  
+  field :domain
+  field :company
+  field :title
+  field :description
+  field :location
   field :other_domain_hits, type: Integer
   field :is_deleted, type: Boolean
   field :destroy_notices, type: Array
-  field :example_page, type: String
+  field :example_page
   
   before_save :lower_case_domain
   validates_uniqueness_of :domain
