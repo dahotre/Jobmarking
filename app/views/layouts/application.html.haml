@@ -16,6 +16,9 @@
     #main{:role => "main"}
       .container
         .row
+          .span7.offset2
+            = render 'jobs/short_form'
+        .row
           .span12
             = render 'layouts/messages'
             = yield

@@ -1,0 +1,8 @@
+- if @short_job
+  #short_form
+    = form_for( @short_job) do |f|
+      -# = f.error_notification
+      .input-append
+        = f.text_field( :url, :class => 'span5', :id => 'appendedInputButton' )
+    
+        = f.submit( :class => 'btn btn-success span2', :value => 'Save Job' )
