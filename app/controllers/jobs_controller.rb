@@ -60,11 +60,16 @@ class JobsController < ApplicationController
   # POST /jobs
   # POST /jobs.json
   def create
+    debugger
+    
     @job = Job.new(params[:job])
     
     unless @job.user == current_user
       @job.user = current_user
     end
+    
+    url_parser = UrlParser.new(@job.url)
+    @job.assign_attributes(url_parser.job_params)
 
     respond_to do |format|
       if @job.save
@@ -80,7 +85,6 @@ class JobsController < ApplicationController
   # PUT /jobs/1
   # PUT /jobs/1.json
   def update
-    debugger
     
     @job = Job.find(params[:id])
 
