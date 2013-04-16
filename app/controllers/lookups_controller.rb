@@ -72,7 +72,6 @@ class LookupsController < ApplicationController
   # DELETE /lookups/1
   # DELETE /lookups/1.json
   def destroy
-    debugger
     @lookup = Lookup.find(params[:id])
     if @lookup.domain
       @lookup.domain += '_d'

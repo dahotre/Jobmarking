@@ -12,7 +12,7 @@ class Lookup
   field :destroy_notices, type: Array
   field :example_page
   
-  before_save :lower_case_domain
+  before_save :lower_case_domain, :test_example_page
   validates_uniqueness_of :domain
   validates_presence_of :example_page, :company, :title, :description, :location, :domain
   
@@ -22,6 +22,10 @@ class Lookup
   protected
   def lower_case_domain
     self.domain.downcase!
+  end
+
+  def test_example_page
+    # TODO Test example page using JobUrlParser to verify that all xpaths are matched..
   end
   
 end

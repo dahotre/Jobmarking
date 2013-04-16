@@ -38,7 +38,6 @@ class JobsController < ApplicationController
 
   # GET /jobs/1/edit
   def edit
-    debugger
     temp_job = Job.find(params[:id])
     
     if temp_job.user == current_user
@@ -60,20 +59,19 @@ class JobsController < ApplicationController
   # POST /jobs
   # POST /jobs.json
   def create
-    debugger
-    
+
     @job = Job.new(params[:job])
     
     unless @job.user == current_user
       @job.user = current_user
     end
     
-    url_parser = UrlParser.new(@job.url)
+    url_parser = JobUrlParser.new(@job.url)
     @job.assign_attributes(url_parser.job_params)
 
     respond_to do |format|
       if @job.save
-        format.html { redirect_to @job, notice: 'Job was successfully created.' }
+        format.html { redirect_to edit_job_path @job, notice: 'Job was successfully created.' }
         format.json { render json: @job, status: :created, location: @job }
       else
         format.html { render action: "new" }

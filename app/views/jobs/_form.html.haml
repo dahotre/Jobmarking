@@ -2,11 +2,11 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :url
-    = f.input :title
-    = f.input :description
-    = f.input :location
-    = f.input :company
+    = f.input :url, :input_html => { :class => 'input-xxlarge' }
+    = f.input :title, :input_html => { :class => 'input-xlarge' }
+    = f.input :company, :input_html => { :class => 'input-large' }
+    = f.input :description, :as => :text, :input_html => { :class => 'input-xxlarge' }
+    = f.input :location, :input_html => { :class => 'input-xlarge' }
 
   .form-actions
     = f.button :submit
