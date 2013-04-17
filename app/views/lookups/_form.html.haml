@@ -1,35 +1,31 @@
-= simple_form_for(@lookup) do |f|
-  = f.error_notification
-  
-  %legend You are the star of our society !
 
-  %div.alert.alert-info#xpath_info_well
-    Please refer
-    %a{ :href => 'http://www.w3schools.com/xpath/default.asp', :target => '_blank' } XPath Tutorial
-    to add the correct XPaths for 
-    %em 
-      Title, Description, and Job Requirement.
-  %div.alert
-    %small
-      If URL of the job is
-      %a https://www.jobs.company.com/browse?jobid=33
-      , choose ONLY 
-      %span.label.label-important
-        company
-      in the 
-      %span{ :style => 'color:tomato'}
-        domain
-      field. Leave out everything else such as 
-      %em
-        protocol, subdomain, public suffix, query string, etc.       
-    
-  .form-inputs
-    = f.input :domain
-    = f.input :company
-    = f.input :title
-    = f.input :description
-    = f.input :location
-    = f.input :example_page
+%legend You are the star of our society !
+.row
+  .span6
+    = simple_form_for(@lookup) do |f|
+      = f.error_notification
 
-  .form-actions
-    = f.button :submit
+      .form-inputs
+        = f.input :example_page, :input_html => { :class => 'input-xlarge'}
+        = f.input :company, :input_html => { :class => 'input-xxlarge input-xpath'}
+        = f.input :title, :input_html => { :class => 'input-xxlarge input-xpath'}
+        = f.input :description, :input_html => { :class => 'input-xxlarge input-xpath'}
+        = f.input :location, :input_html => { :class => 'input-xxlarge input-xpath'}
+        = f.input :logo, :input_html => { :class => 'input-xxlarge input-xpath'}
+
+      .form-actions
+        - if @job_params_hash
+          = f.button :submit
+        = f.button :submit, 'Preview', :name => 'preview'
+
+  .span6
+    - if @job_params_hash
+      %div#jobs_params_preview.well
+        - @job_params_hash.each do |k,v|
+          %p= v.slice(0..200)
+
+    %div.alert#xpath_info_well
+      Please refer
+      %a{ :href => 'http://www.w3schools.com/xpath/default.asp', :target => '_blank' } XPath Tutorial
+      to add the correct XPaths for each of the fields respectively. Clicking preview will display an
+      excerpt of the respective fields found on the example page, if the xpaths were correct.

@@ -1,9 +1,7 @@
 Jobmarking::Application.routes.draw do
   resources :jobs
 
-
   resources :lookups
-
 
   authenticated :user do
     root :to => 'home#index'

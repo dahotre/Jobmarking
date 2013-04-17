@@ -9,54 +9,66 @@ class JobUrlParser
       :title => '//*[@itemprop="title"]',
       :location => '//*[@itemprop="jobLocation"]',
       :description => '//*[@itemprop="description"]',
-      :company => '//*[@itemprop="name"]'
+      :company => '//*[@itemprop="name"]',
+      :photo => '//*[@itemtype="http://schema.org/JobPosting"]//img'
   }
 
   def initialize (url)
     @url = url
-  end
-  
-  def job_params
     uri = URI.parse(@url)
-    source = uri.read
+    @uri_source = uri.read
+  end
 
-    # TODO Get domain_details
-    domain_details = PublicSuffix.parse source.base_uri.host
-    Rails.logger.debug "Domain for #{source.base_uri.to_s} => #{domain_details}"
+  # Finds a Lookup that matches the domain of the initialized job url
+  # and parses the source HTML of the url with reference to XPath variables
+  # of the Lookup object
+  #
+  # @return [Hash] of Job attributes
+  def job_params
 
-    # TODO get corresponding lookup
+    #  Get domain_details
+    domain_details = PublicSuffix.parse @uri_source.base_uri.host
+    Rails.logger.debug "Domain for #{@uri_source.base_uri.to_s} => #{domain_details}"
+
+    #  get corresponding lookup
     if domain_details.sld.present?
       @lookup ||= Lookup.find_by(domain: domain_details.sld)
     end
 
-    # TODO get params hash given uri_source & lookup
-    @params = generate_params(source, @lookup) if @lookup.present?
+    #  get params hash given uri_source & lookup
+    @params = generate_params_given_lookup(@lookup) if @lookup.present?
 
-    @params[:description] ||= read_from_readability source
+    @params[:description] ||= Readability::Document.new(@uri_source).content
     return @params
   end
 
-  def read_from_readability(uri_source)
-    Readability::Document.new(uri_source).content
-  end
-
-  def generate_params(uri_source, lookup)
+  # Given a Lookup , parses the source HTML of the initialized job url with reference
+  # to XPath variables of the Lookup object
+  #
+  # @param [Lookup] lookup
+  # @return [Hash] of Job attributes
+  def generate_params_given_lookup(lookup)
     job_params ||= Hash.new
 
-    job_params[:actual_url] = uri_source.base_uri.to_s
+    job_params[:actual_url] = @uri_source.base_uri.to_s
     Rails.logger.debug "Generating params for : #{lookup.inspect}"
-    noko_doc = Nokogiri::HTML(uri_source) do |config|
+    noko_doc = Nokogiri::HTML(@uri_source) do |config|
       config.noblanks.noent.noerror.nonet
     end
 
-    [:title, :description, :location, :company].each { |job_attr|
+    [:title, :description, :location, :company, :logo].each { |job_attr|
       attr_xpath = lookup.send( job_attr.to_s ).present? ? lookup.send(job_attr.to_s)
                     : @@default_lookup_hash[ job_attr ]
       attr_node = noko_doc.at_xpath attr_xpath
 
       if attr_node.present?
-        job_params[job_attr] = Sanitize.clean(attr_node.content, Sanitize::Config::RESTRICTED)
+        if job_attr == :logo
+          photo_url = attr_node.attribute('src').content
+          job_params[job_attr] = photo_url if photo_url.present?
+        else
+          job_params[job_attr] = Sanitize.clean(attr_node.content, Sanitize::Config::RESTRICTED)
           .gsub(/\s+/, ' ')
+        end
       end
     }
 

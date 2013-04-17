@@ -1,2 +1,5 @@
 - @jobs.each do |job|
-  = link_to escape_javascript(job.title), job
+  %article
+    - if job.logo.present?
+      = image_tag job.logo
+    = link_to escape_javascript(job.title), job

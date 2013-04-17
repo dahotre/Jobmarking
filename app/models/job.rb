@@ -7,6 +7,7 @@ class Job
   field :description
   field :location
   field :company
+  field :logo
   
   field :actual_url
   field :active, type: Boolean, default: true
@@ -14,7 +15,8 @@ class Job
   belongs_to :user
   
   validates_presence_of :url
-  validates_format_of :url, :actual_url, :with => /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix
+  validates_format_of :url, :actual_url, :logo,
+                      :with => /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix
   
   scope :active, where( active: true )
   scope :inactive, where( active: false)

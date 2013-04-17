@@ -2,11 +2,14 @@
   = f.error_notification
 
   .form-inputs
+    - if @job.logo.present?
+      = image_tag @job.logo
     = f.input :url, :input_html => { :class => 'input-xxlarge' }
     = f.input :title, :input_html => { :class => 'input-xlarge' }
     = f.input :company, :input_html => { :class => 'input-large' }
     = f.input :description, :as => :text, :input_html => { :class => 'input-xxlarge' }
     = f.input :location, :input_html => { :class => 'input-xlarge' }
+    = f.input :logo, :input_html => { :class => 'input-xlarge' }
 
   .form-actions
     = f.button :submit
