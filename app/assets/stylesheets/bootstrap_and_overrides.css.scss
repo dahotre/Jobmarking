@@ -10,7 +10,8 @@ body { padding-top: 60px; }
   //border-radius: 5px;
 }
 
-input[type="text"].input-xpath, #jobs_params_preview p {
+input[type="text"].input-xpath, #jobs_params_preview {
   font-family: MONACO, monospace;
   font-size: 0.8em;
+  word-wrap: break-word;
 }

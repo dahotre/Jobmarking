@@ -48,17 +48,14 @@ class LookupsController < ApplicationController
 
       @lookup.example_page = @job_params_hash[:actual_url]
 
-      all_values_present = @job_params_hash.reduce (true) { |memo, (k, v)| (memo && v.present?) }
+      @all_values_present = @job_params_hash.reduce (true) { |memo, (k, v)| (memo && v.present?) }
 
       respond_to do |format|
-        if all_values_present
-          format.html { render action: "new"}
-        else
-          @job_params_hash = nil
-        end
+        format.html { render action: "new"}
+        format.json { render json: @job_params_hash.merge(success: @all_values_present)}
       end
 
-    else
+    elsif (params[:submit])
       respond_to do |format|
         if @lookup.save
           format.html { redirect_to @lookup, notice: 'Lookup was successfully created.' }
@@ -68,7 +65,14 @@ class LookupsController < ApplicationController
           format.json { render json: @lookup.errors, status: :unprocessable_entity }
         end
       end
+
+    elsif (params[:unparseable])
+      respond_to do |format|
+        Longo.create(:level => 'WARN', :reason => 'Failed XPath parse', :lookup => @lookup.attributes) unless Longo.find_by
+        format.html { redirect_to lookups_path, notice: 'Issue reported. Thanks for the help!'}
+      end
     end
+
 
   end
 

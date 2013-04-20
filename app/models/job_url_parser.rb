@@ -59,7 +59,14 @@ class JobUrlParser
     [:title, :description, :location, :company, :logo].each { |job_attr|
       attr_xpath = lookup.send( job_attr.to_s ).present? ? lookup.send(job_attr.to_s)
                     : @@default_lookup_hash[ job_attr ]
-      attr_node = noko_doc.at_xpath attr_xpath
+      attr_node =
+      begin
+        noko_doc.at_xpath attr_xpath
+      rescue Nokogiri::SyntaxError => se
+        Rails.logger.debug "Failed xpath: #{attr_xpath} || URL: #{job_params[:actual_url]} || Other params: #{lookup.inspect}"
+        nil
+      end
+
 
       if attr_node.present?
         if job_attr == :logo
@@ -69,10 +76,10 @@ class JobUrlParser
           job_params[job_attr] = Sanitize.clean(attr_node.content, Sanitize::Config::RESTRICTED)
           .gsub(/\s+/, ' ')
         end
+      else
+        job_params[job_attr] = nil
       end
     }
-
-    Rails.logger.debug "Title node set : #{job_params.inspect}"
 
     return job_params
   end

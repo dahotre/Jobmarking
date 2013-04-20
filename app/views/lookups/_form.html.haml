@@ -14,15 +14,25 @@
         = f.input :logo, :input_html => { :class => 'input-xxlarge input-xpath'}
 
       .form-actions
+        - if @all_values_present
+          = f.button :submit, 'Submit', :name => 'submit'
+        - else
+          = f.button :submit, 'Preview', :name => 'preview'
+
         - if @job_params_hash
-          = f.button :submit
-        = f.button :submit, 'Preview', :name => 'preview'
+          = f.button :submit, 'Report parsing issue', :name => 'unparseable', :class => 'btn-warning btn'
+          %span.badge.badge-important
+            Check Abridged Preview for missing values
 
   .span6
     - if @job_params_hash
       %div#jobs_params_preview.well
+        %legend Abridged Preview
         - @job_params_hash.each do |k,v|
-          %p= v.slice(0..200)
+          %p
+            %span{:class => "#{v.present? ? 'badge' : 'badge badge-important'}"}
+              %b= k.to_s.upcase
+            = v.slice(0..200) if v.present?
 
     %div.alert#xpath_info_well
       Please refer
