@@ -45,6 +45,7 @@ class JobsController < ApplicationController
     else
       @job = Job.new
       @job.user = current_user
+      @job.inherited = true
       
       logger.debug temp_job
       temp_job.attributes.each { |attr|
@@ -62,12 +63,15 @@ class JobsController < ApplicationController
 
     @job = Job.new(params[:job])
     
-    unless @job.user == current_user
-      @job.user = current_user
-    end
-    
     url_parser = JobUrlParser.new(@job.url)
     @job.assign_attributes(url_parser.job_params)
+
+    if @job.user == current_user
+      old_job = Job.find_by(actual_url: @job.actual_url)
+      if old_job.present?
+        @job.id=old_job.id
+      end
+    end
 
     respond_to do |format|
       if @job.save

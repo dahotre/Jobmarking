@@ -11,6 +11,7 @@ class Job
   
   field :actual_url
   field :active, type: Boolean, default: true
+  field :inherited, type: Boolean, default: false
   
   belongs_to :user
   

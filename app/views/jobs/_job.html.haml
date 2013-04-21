@@ -6,7 +6,7 @@
       = Sanitize.clean( full ? j.location : j.location.slice(0..50) )
   -if j.description.present?
     .job_description_display
-      = Sanitize.clean( full ? j.description : j.description.slice(0..250))
+      = Sanitize.clean( full ? j.description : j.description.slice(0..250)) + '...'
     .job_actions
       = link_to edit_job_path(j) do
         %i.icon-bookmark
