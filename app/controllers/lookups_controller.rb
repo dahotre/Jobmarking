@@ -48,7 +48,13 @@ class LookupsController < ApplicationController
 
       @lookup.example_page = @job_params_hash[:actual_url]
 
-      @all_values_present = @job_params_hash.reduce (true) { |memo, (k, v)| (memo && v.present?) }
+      @all_values_present = @job_params_hash.reduce (true) { |memo, (k, v)|
+        if k == :logo
+          memo && true
+        else
+          memo && v.present?
+        end
+      }
 
       respond_to do |format|
         format.html { render action: "new"}

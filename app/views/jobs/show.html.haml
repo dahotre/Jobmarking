@@ -1,21 +1,5 @@
 %p#notice= notice
 
-%p
-  %b Url:
-  = @job.url
-%p
-  %b Title:
-  = @job.title
-%p
-  %b Description:
-  = raw @job.description
-%p
-  %b Location:
-  = @job.location
-%p
-  %b Company:
-  = @job.company
+= render :partial => 'jobs/job', :locals => { :j => @job, :full => true, :owner => true }
 
-= link_to 'Edit', edit_job_path(@job)
-\|
 = link_to 'Back', jobs_path

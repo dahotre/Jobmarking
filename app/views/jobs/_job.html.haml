@@ -10,7 +10,9 @@
     .job_actions
       = link_to edit_job_path(j) do
         %i.icon-bookmark
-        Save
+        = owner ? 'Edit' : 'Save'
       = link_to '#' do # TODO Implement popover
         %i.icon-share
         Share
+      -if owner
+        = link_to 'Destroy', j, :method => :delete, :data => { :confirm => 'Are you sure?' }

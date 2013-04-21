@@ -1,28 +1,7 @@
-%h1 Listing jobs
+%legend Your dream jobs
 
-%table
-  %tr
-    %th Url
-    %th Title
-    %th Description
-    %th Location
-    %th Company
-    %th
-    %th
-    %th
-
-  - @jobs.each do |job|
-    %tr
-      %td= job.url
-      %td= job.title
-      %td= job.description
-      %td= job.location
-      %td= job.company
-      %td= link_to 'Show', job
-      %td= link_to 'Edit', edit_job_path(job)
-      %td= link_to 'Destroy', job, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
+- @jobs.each do |job|
+  = render :partial => 'jobs/job', :locals => { :j => job, :full => false, :owner => true }
 
 = paginate @jobs
 = link_to 'New Job', new_job_path
