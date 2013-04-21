@@ -5,7 +5,7 @@ class JobsController < ApplicationController
   # GET /jobs
   # GET /jobs.json
   def index
-    @jobs = Job.by_user current_user
+    @jobs = Job.by_user(current_user).page params[:page]
 
     respond_to do |format|
       format.html # index.html.erb

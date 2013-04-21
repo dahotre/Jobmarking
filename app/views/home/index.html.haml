@@ -1,5 +1,4 @@
-- @jobs.each do |job|
-  %article
-    - if job.logo.present?
-      = image_tag job.logo
-    = link_to escape_javascript(job.title), job
+.row.clearfix
+  - @jobs.each do |job|
+    = render :partial => 'jobs/job', :locals => { :j => job, :full => false }
+= paginate @jobs

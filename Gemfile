@@ -20,6 +20,8 @@ gem 'country_select'
 gem 'public_suffix'
 gem 'turbolinks'
 gem 'sanitize'
+gem 'kaminari'
+gem 'font-awesome-rails'
 
 group :development do
   gem 'meta_request'

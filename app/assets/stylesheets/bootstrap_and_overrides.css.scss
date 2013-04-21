@@ -1,6 +1,7 @@
 @import "bootstrap";
 body { padding-top: 60px; }
 @import "bootstrap-responsive";
+@import "font-awesome";
 
 #short_form .input-append {
   //padding: 15px 5px 7px 5px;
@@ -14,4 +15,27 @@ input[type="text"].input-xpath, #jobs_params_preview {
   font-family: MONACO, monospace;
   font-size: 0.8em;
   word-wrap: break-word;
+}
+.job_article {
+  float: left;
+  border: 1px solid gainsboro;
+  padding: 5px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+.job_legend {
+  line-height: 1.2em;
+  color: #555555;
+}
+.job_location_display {
+  color: orange;
+  font-family: Monaco, Lucida Consolas, monospace;
+  font-size: 12px;
+}
+.job_actions {
+  font-size: 0.9em;
+  a {
+    margin-right: 5px;
+  }
 }
