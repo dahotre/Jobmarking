@@ -27,12 +27,12 @@ class JobsController < ApplicationController
   # GET /jobs/new
   # GET /jobs/new.json
   def new
-    @job = Job.new
-    @job.user=current_user
+    @short_job = Job.new
+    @short_job.user=current_user
     
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @job }
+      format.json { render json: @short_job }
     end
   end
 
@@ -54,6 +54,7 @@ class JobsController < ApplicationController
           @job.send( attr[0].to_s + '=', attr[1])
         end  
       }
+      @job.save!
     end
   end
 
@@ -63,6 +64,10 @@ class JobsController < ApplicationController
 
     @job = Job.new(params[:job])
     
+    unless @job.user == current_user
+      @job.user = current_user
+    end
+
     url_parser = JobUrlParser.new(@job.url)
     @job.assign_attributes(url_parser.job_params)
 
@@ -75,7 +80,7 @@ class JobsController < ApplicationController
 
     respond_to do |format|
       if @job.save
-        format.html { redirect_to edit_job_path @job, notice: 'Job was successfully created.' }
+        format.html { redirect_to @job, notice: 'Job was successfully created.' }
         format.json { render json: @job, status: :created, location: @job }
       else
         format.html { render action: "new" }
@@ -91,7 +96,6 @@ class JobsController < ApplicationController
     @job = Job.find(params[:id])
 
     unless @job.user == current_user
-      @job = Job.new
       @job.user = current_user
       Job.find(params[:id]).attributes.each { |attr|
         if attr[0].in? ['url', 'title', 'location', 'description', 'actual_url', 'company', 'active']

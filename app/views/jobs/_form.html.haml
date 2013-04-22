@@ -11,5 +11,9 @@
     = f.input :location, :input_html => { :class => 'input-xlarge' }
     = f.input :logo, :input_html => { :class => 'input-xlarge' }
 
+    .hidden-fields
+      = f.input :actual_url
+      = f.input :active, :as => :boolean
+
   .form-actions
     = f.button :submit
