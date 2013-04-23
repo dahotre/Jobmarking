@@ -1,80 +1,68 @@
 h1. Jobmarking
 
-This application was generated with the "rails_apps_composer":https://github.com/RailsApps/rails_apps_composer gem provided by the "RailsApps Project":http://railsapps.github.com/.
+Jobmarking is an open-source service for saving bookmarks for the Job postings that you find interesting on the internet. And by the virtue of being a collection of 'interesting' job posts, you can find it useful to search for jobs. 
 
-h2. Diagnostics
-
-This application was built with recipes that are known to work together.
-
-This application was built with preferences that are NOT known to work together.
-
-If the application doesn't work as expected, please "report an issue":https://github.com/RailsApps/rails_apps_composer/issues and include these diagnostics:
-
-We'd also like to know if you've found combinations of recipes or preferences that do work together.
-
-Recipes:
-["controllers", "core", "email", "extras", "frontend", "gems", "git", "init", "models", "prelaunch", "railsapps", "readme", "routes", "saas", "setup", "testing", "views"]
-
-Preferences:
-{:git=>true, :railsapps=>"none", :dev_webserver=>"webrick", :prod_webserver=>"thin", :database=>"mongodb", :orm=>"mongoid", :templates=>"haml", :unit_test=>"test_unit", :integration=>"rspec-capybara", :continuous_testing=>"none", :fixtures=>"none", :frontend=>"bootstrap", :bootstrap=>"sass", :email=>"gmail", :authentication=>"devise", :devise_modules=>"default", :authorization=>"none", :form_builder=>"simple_form", :starter_app=>"users_app", :rvmrc=>false, :quiet_assets=>true, :local_env_file=>true, :better_errors=>true, :ban_spiders=>true, :github=>true}
-
-h2. Ruby on Rails
+h2. Technologies used
 
 This application requires:
 
 * Ruby version 1.9.3
 * Rails version 3.2.13
+* MongoDB
 
 Learn more about "Installing Rails":http://railsapps.github.com/installing-rails.html.
 
-h2. Database
-
-This application uses MongoDB with the Mongoid ORM.
-
-h2. Development
+h3. Development
 
 * Template Engine: Haml
-* Testing Framework: Test::Unit
 * Front-end Framework: Twitter Bootstrap (Sass)
-* Form Builder: SimpleForm
-* Authentication: Devise
-* Authorization: None
-
-h2. Email
-
-The application is configured to send email using a Gmail account.
+* ORM: Mongoid
 
 h2. Getting Started
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-h2. Documentation and Support
-
-This is the only documentation.
+Take a peek at the various controllers in the app. That's where all the fun is. Well, mostly. You can begin to contribute by writing good RSpec/Cucumber tests.
 
 h4. Issues
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+I intend to add new features as issues in https://github.com/dahotre/Jobmarking/issues
 
-h2. Similar Projects
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 h2. Contributing
 
-If you make improvements to this application, please share with others.
-
-* Fork the project on GitHub.
-* Make your feature addition or bug fix.
-* Commit with Git.
-* Send the author a pull request.
+# Fork it
+# Create your feature branch (git checkout -b my-new-feature)
+# Commit your changes (git commit -am 'Add some feature')
+# Push to the branch (git push origin my-new-feature)
+# Create new Pull Request
 
 If you add functionality to this application, create an alternative implementation, or build an application that is similar, please contact me and I'll add a note to the README so that others can find your work.
 
 h2. Credits
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+* All the contributors of the "open-source gems":https://github.com/dahotre/Jobmarking/blob/master/Gemfile.lock
+* http://railscasts.com
 
 h2. License
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+"The MIT License (MIT)":http://opensource.org/licenses/mit-license.php
+
+Copyright (c) 2013, Aniket Dahotre
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
