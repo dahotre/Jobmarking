@@ -4,16 +4,12 @@
   .form-inputs
     - if @job.logo.present?
       = image_tag @job.logo
-    = f.input :url, :input_html => { :class => 'input-xxlarge' }
-    = f.input :title, :input_html => { :class => 'input-xlarge' }
-    = f.input :company, :input_html => { :class => 'input-large' }
-    = f.input :description, :as => :text, :input_html => { :class => 'input-xxlarge' }
-    = f.input :location, :input_html => { :class => 'input-xlarge' }
-    = f.input :logo, :input_html => { :class => 'input-xlarge' }
+    = f.input :url, :input_html => { :class => 'input-xxlarge' } if @job.url.blank?
+    = f.input :company, :input_html => { :class => 'input-large' } if @job.company.blank?
+    = f.input :location, :input_html => { :class => 'input-xlarge' } if @job.location.blank?
 
-    .hidden-fields
-      = f.input :actual_url
-      = f.input :active, :as => :boolean
+    = f.input :note, :label => 'Private Note', :as => :text, :input_html => { :class => 'input-xxlarge', :rows => 5 }
+
 
   .form-actions
     = f.button :submit

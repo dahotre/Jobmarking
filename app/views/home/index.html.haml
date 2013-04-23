@@ -1,4 +1,6 @@
 .row.clearfix
   - @jobs.each do |job|
-    = render :partial => 'jobs/job', :locals => { :j => job, :full => false, :owner => (job.user == current_user) }
+    = render :partial => 'jobs/job',
+       :locals => { :j => job, :full => false, :owner => (job.user == current_user),
+       :show_actions => true }
 = paginate @jobs

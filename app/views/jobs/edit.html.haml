@@ -1,5 +1,6 @@
-%h1 Editing job
+%legend Hope you find this job useful
 
+= render :partial => 'jobs/job', :locals => { :j => @job, :full => true, :owner => true, :show_actions => false }
 = render 'form'
 
 = link_to 'Show', @job

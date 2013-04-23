@@ -1,6 +1,6 @@
 %legend Your dream jobs
 
 - @jobs.each do |job|
-  = render :partial => 'jobs/job', :locals => { :j => job, :full => false, :owner => true }
+  = render :partial => 'jobs/job', :locals => { :j => job, :full => false, :owner => true, :show_actions => true }
 
 = paginate @jobs

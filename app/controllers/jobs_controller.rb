@@ -54,6 +54,13 @@ class JobsController < ApplicationController
           @job.send( attr[0].to_s + '=', attr[1])
         end  
       }
+
+      # If old job with same actual url is stored, then get rid of it
+      old_job = Job.find_by(actual_url: @job.actual_url)
+      if old_job.present?
+        old_job.destroy
+      end
+
       @job.save!
     end
   end

@@ -12,7 +12,11 @@ class Job
   field :actual_url
   field :active, type: Boolean, default: true
   field :inherited, type: Boolean, default: false
-  
+
+  field :note
+
+  field :location, type: LatLng
+
   belongs_to :user
   
   validates_presence_of :url

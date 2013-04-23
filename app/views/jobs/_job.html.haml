@@ -1,12 +1,15 @@
 %article{:class => full ? 'job_article' : 'job_article span5'}
   %legend.job_legend
     = Sanitize.clean( full ? j.title : j.title.slice(0..100) )
+    .job_company_display
+      = Sanitize.clean( full ? j.company : j.company.slice(0..50) )
     .job_location_display
       %i.icon-map-marker
       = Sanitize.clean( full ? j.location : j.location.slice(0..50) )
   -if j.description.present?
     .job_description_display
       = Sanitize.clean( full ? j.description : j.description.slice(0..250)) + '...'
+  -if show_actions
     .job_actions
       = link_to edit_job_path(j) do
         %i.icon-bookmark
