@@ -43,22 +43,15 @@ class LookupsController < ApplicationController
     @lookup = Lookup.new(params[:lookup])
 
     if (params[:preview])
-      parser = JobUrlParser.new @lookup.example_page
-      @job_params_hash = parser.generate_params_given_lookup @lookup
+      @job_params_hash = generate_job_params(@lookup)
 
       @lookup.example_page = @job_params_hash[:actual_url]
 
-      @all_values_present = @job_params_hash.reduce (true) { |memo, (k, v)|
-        if k == :logo
-          memo && true
-        else
-          memo && v.present?
-        end
-      }
+      @all_values_present = all_values_present?(@job_params_hash)
 
       respond_to do |format|
         format.html { render action: "new"}
-        format.json { render json: @job_params_hash.merge(success: @all_values_present)}
+        format.json { render json: @job_params_hash.merge( success: @all_values_present )}
       end
 
     elsif (params[:submit])
@@ -74,7 +67,12 @@ class LookupsController < ApplicationController
 
     elsif (params[:unparseable])
       respond_to do |format|
-        Longo.create(:level => 'WARN', :reason => 'Failed XPath parse', :lookup => @lookup.attributes) unless Longo.find_by
+        old_longo = Longo.find_by(:url => @lookup.example_page, :reason => 'Failed XPath parse')
+
+        if old_longo.blank?
+          Longo.create(:level => 'WARN', :reason => 'Failed XPath parse', :lookup => @lookup.attributes, :url => @lookup.example_page)
+        end
+
         format.html { redirect_to lookups_path, notice: 'Issue reported. Thanks for the help!'}
       end
     end
@@ -88,19 +86,16 @@ class LookupsController < ApplicationController
     @lookup = Lookup.find(params[:id])
 
     if (params[:preview])
-      parser = JobUrlParser.new @lookup.example_page
-      @job_params_hash = parser.generate_params_given_lookup @lookup
+      @lookup.assign_attributes params[:lookup]
+      @job_params_hash = generate_job_params(@lookup)
 
       @lookup.example_page = @job_params_hash[:actual_url]
 
-      all_values_present = @job_params_hash.reduce (true) { |memo, (k, v)| (memo && v.present?) }
+      @all_values_present = all_values_present?(@job_params_hash)
 
       respond_to do |format|
-        if all_values_present
-          format.html { render action: "new"}
-        else
-          @job_params_hash = nil
-        end
+        format.html { render action: "new"}
+        format.json { render json: @job_params_hash.merge( success: @all_values_present)}
       end
 
     else
@@ -135,4 +130,24 @@ class LookupsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  protected
+  def all_values_present?(job_params_hash)
+    all_values_present = job_params_hash.reduce (true) { |memo, (k, v)|
+      if k == :logo
+        memo && true
+      else
+        memo && v.present?
+      end
+    }
+
+    return all_values_present
+  end
+
+  def generate_job_params(lookup)
+    parser = JobUrlParser.new(lookup.example_page)
+    return parser.generate_params_given_lookup lookup
+  end
+
+
 end

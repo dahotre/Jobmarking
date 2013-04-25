@@ -18,11 +18,10 @@
           = f.button :submit, 'Submit', :name => 'submit'
         - else
           = f.button :submit, 'Preview', :name => 'preview'
-
-        - if @job_params_hash
-          = f.button :submit, 'Report parsing issue', :name => 'unparseable', :class => 'btn-warning btn'
-          %span.badge.badge-important
-            Check Abridged Preview for missing values
+          - if @job_params_hash
+            = f.button :submit, 'Report parsing issue', :name => 'unparseable', :class => 'btn-warning btn'
+            %span.badge.badge-important
+              Check Abridged Preview for missing values
 
   .span6
     - if @job_params_hash
