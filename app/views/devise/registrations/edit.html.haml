@@ -1,8 +1,13 @@
-%h2
+%legend
   Edit #{resource_name.to_s.humanize}
 = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-vertical' }) do |f|
   = f.error_notification
   = display_base_errors resource
+  = gravatar_image(resource.email, 36)
+  = link_to 'Change photo at gravatar.com', 'http://gravatar.com'
+  %br
+  %br
+  %br
   = f.input :name, :autofocus => true
   = f.input :email, :required => true
   = f.input :country, :priority => ['United States', 'United Kingdom', 'Germany', 'India']

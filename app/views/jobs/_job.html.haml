@@ -1,7 +1,8 @@
 %article{:class => full ? 'job_article' : 'job_article span5'}
   %legend.job_legend
     = Sanitize.clean( full ? j.title : j.title.slice(0..100) )
-    .job_company_display
+    %br
+    %span.job_company_display.badge.badge-success
       = Sanitize.clean( full ? j.company : j.company.slice(0..50) )
     .job_location_display
       %i.icon-map-marker

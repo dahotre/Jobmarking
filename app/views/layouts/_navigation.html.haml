@@ -14,6 +14,7 @@
         = link_to 'Saved Jobs', jobs_path
       %li.dropdown
         %a{ :href=> '#', :class => 'dropdown-toggle', 'data-toggle' => 'dropdown'}
+          = gravatar_image current_user.email
           Account
           %b.caret
         %ul.dropdown-menu

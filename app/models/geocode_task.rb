@@ -2,6 +2,7 @@ require 'open-uri'
 
 class GeocodeTask
   @@mapquest_url = 'http://open.mapquestapi.com/geocoding/v1/address?callback=renderGeocode&maxResults=1&thumbMaps=true&key='
+  @@gmaps_url = 'http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address='
 #status
 #location
   def initialize(param)
@@ -12,8 +13,23 @@ class GeocodeTask
     end
   end
 
-  def perform
-    result = URI.parse(@@mapquest_url + ENV['MAPQUEST_KEY'] + "&location=#{URI::encode(@location)}").read
+  def perform(limit=2)
+    #URI.parse(@@mapquest_url + ENV['MAPQUEST_KEY'] + "&location=#{URI::encode(@location)}").read
+    if limit > 0
+      result = JSON.parse(URI.parse(@@gmaps_url + "#{URI::encode(@location)}").read)
+      if (result['status'] == 'OK')
+         return result['results'][0]['geometry']['location']
+      elsif (result['status'] == 'UNKNOWN_ERROR')
+        perform(--limit)
+      else
+        Longo.create( :level => 'ERROR', :reason => 'Geocode error', :location => @location, :result => result )
+      end
+    else
+      Longo.create( :level => 'ERROR', :reason => 'Geocode error', :location => @location)
+    end
+
+    return nil
+
   end
 
 end

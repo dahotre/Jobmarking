@@ -1,3 +1,4 @@
+require 'digest/md5'
 module ApplicationHelper
 
   def display_base_errors resource
@@ -10,6 +11,10 @@ module ApplicationHelper
     </div>
     HTML
     html.html_safe
+  end
+
+  def gravatar_image(email, size=14)
+    image_tag "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}?d=mm&s=#{size}"
   end
 
 end
