@@ -8,12 +8,12 @@ class GeocodeTask
     if param.is_a? Job
       @location = param.location
     else
-      @location = URI::encode param
+      @location = param
     end
   end
 
   def perform
-    result = URI.parse(@@mapquest_url + ENV['MAPQUEST_KEY'] + "&location=#{@location}").read
+    result = URI.parse(@@mapquest_url + ENV['MAPQUEST_KEY'] + "&location=#{URI::encode(@location)}").read
   end
 
 end
