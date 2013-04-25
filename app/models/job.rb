@@ -15,15 +15,14 @@ class Job
 
   field :note
 
-  field :geo_code, type: LatLng
+  field :geo_code, type: Array
 
   belongs_to :user
   
   validates_presence_of :url
   validates_format_of :url, :actual_url, :logo,
                       :with => /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix
-  before_save :geocode_location
-  
+
   scope :active, where( active: true, inherited:false )
   scope :inactive, where( active: false)
   
@@ -31,10 +30,13 @@ class Job
     where( user: curr_user )
   }
 
-  protected
+  scope :near_to, ->(param) {
+    within_spherical_circle(geo_code: [param, (250.0/3959.0).to_f ])
+  }
+
   def geocode_location
     Rails.logger.info 'Before saving job'
     geo_task = GeocodeTask.new self
-    geo_task.perform
+    self.geo_code= geo_task.perform
   end
 end

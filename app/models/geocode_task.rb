@@ -17,8 +17,8 @@ class GeocodeTask
     #URI.parse(@@mapquest_url + ENV['MAPQUEST_KEY'] + "&location=#{URI::encode(@location)}").read
     if limit > 0
       result = JSON.parse(URI.parse(@@gmaps_url + "#{URI::encode(@location)}").read)
-      if (result['status'] == 'OK')
-         return result['results'][0]['geometry']['location']
+      if (result['status'] == 'OK' && result['results'].length >= 1 )
+         return (result['results'][0]['geometry']['location']).values_at('lng', 'lat')
       elsif (result['status'] == 'UNKNOWN_ERROR')
         perform(--limit)
       else

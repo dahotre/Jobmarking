@@ -5,8 +5,11 @@
     %span.job_company_display.badge.badge-success
       = Sanitize.clean( full ? j.company : j.company.slice(0..50) )
     .job_location_display
-      %i.icon-map-marker
       = Sanitize.clean( full ? j.location : j.location.slice(0..50) )
+      - if j.geo_code.present? && j.geo_code[0].present? && j.geo_code.present?
+        %a{ href: "/?near=#{j.geo_code[0]},#{j.geo_code[1]}"}
+          Search near this
+          %i.icon-map-marker
   -if j.description.present?
     .job_description_display
       = Sanitize.clean( full ? j.description : j.description.slice(0..250)) + '...'

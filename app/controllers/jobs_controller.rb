@@ -85,6 +85,8 @@ class JobsController < ApplicationController
       end
     end
 
+    @job.geocode_location
+
     respond_to do |format|
       if @job.save
         format.html { redirect_to @job, notice: 'Job was successfully created.' }
