@@ -15,7 +15,7 @@
       %li.dropdown
         %a{ :href=> '#', :class => 'dropdown-toggle', 'data-toggle' => 'dropdown'}
           = gravatar_image current_user.email
-          Account
+          = current_user.name.present? ? current_user.name.slice(0..10) : current_user.email.slice(0..10)
           %b.caret
         %ul.dropdown-menu
           %li

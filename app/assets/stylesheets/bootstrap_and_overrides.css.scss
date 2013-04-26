@@ -24,6 +24,15 @@ input[type="text"].input-xpath, #jobs_params_preview {
   -moz-border-radius: 4px;
   border-radius: 4px;
   margin-bottom: 20px;
+  .job_title {
+    color: #555555;
+  }
+  .job_logo {
+    max-height: 1em;
+  }
+  i {
+    font-size: 0.8em;
+  }
 }
 .job_legend {
   line-height: 1.2em;

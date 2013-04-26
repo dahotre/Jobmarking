@@ -1,9 +1,12 @@
 %article{:class => full ? 'job_article' : 'job_article span5'}
   %legend.job_legend
-    = Sanitize.clean( full ? j.title : j.title.slice(0..100) )
+    =link_to job_path(j), class: 'job_title' do
+      = Sanitize.clean( full ? j.title : j.title.slice(0..100) ) if j.title.present?
+      %i.icon-link
     %br
+    = image_tag j.logo, class: 'job_logo' if j.logo.present?
     %span.job_company_display.badge.badge-success
-      = Sanitize.clean( full ? j.company : j.company.slice(0..50) )
+      = Sanitize.clean( full ? j.company : j.company.slice(0..20) ) if j.company.present?
     .job_location_display
       = Sanitize.clean( full ? j.location : j.location.slice(0..50) )
       - if j.geo_code.present? && j.geo_code[0].present? && j.geo_code.present?
@@ -12,7 +15,7 @@
           %i.icon-map-marker
   -if j.description.present?
     .job_description_display
-      = Sanitize.clean( full ? j.description : j.description.slice(0..250)) + '...'
+      = Sanitize.clean( full ? j.description : j.description.slice(0..250)) + '...' if j.description.present?
   -if show_actions
     .job_actions
       = link_to edit_job_path(j) do
@@ -23,3 +26,6 @@
         Share
       -if owner
         = link_to 'Destroy', j, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      = link_to j.actual_url, target: '_blank' do
+        %i.icon-share-alt
+        Apply

@@ -1,5 +1,7 @@
 %legend
-  Edit #{resource_name.to_s.humanize}
+  =resource.name.present? ? resource.name : resource.email
+  's profile
+
 = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-vertical' }) do |f|
   = f.error_notification
   = display_base_errors resource
