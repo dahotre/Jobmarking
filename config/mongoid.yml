@@ -74,18 +74,21 @@ test:
         - localhost:27017
       options:
         consistency: :strong
-        raise_not_found_error: false
         # In the test environment we lower the retries and retry interval to
         # low amounts for fast failures.
         max_retries: 1
         retry_interval: 0
+  options:
+    skip_version_check: true
+    raise_not_found_error: false
 <% if ENV['MONGOHQ_URL'] %>
 production:
   sessions:
     default:
       uri: <%= ENV['MONGOHQ_URL'] %>
       options:
-        skip_version_check: true
         safe: false
-        raise_not_found_error: false
+  options:
+    skip_version_check: true
+    raise_not_found_error: false
 <% end %>
