@@ -8,9 +8,10 @@ This application requires:
 
 * Ruby version 1.9.3
 * Rails version 3.2.13
-* MongoDB
+* MongoDB version >= 2.4.2 
 
 Learn more about "Installing Rails":http://railsapps.github.com/installing-rails.html.
+Learn more about "Getting Started with MongoDB":http://dahotre.herokuapp.com/#/posts/514ff6cb4c827fd26e000001 or "Official MongoDB docs":http://www.mongodb.org/
 
 h3. Development
 
