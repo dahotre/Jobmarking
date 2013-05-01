@@ -43,41 +43,41 @@ class JobUrlParser
   def generate_params_given_lookup(lookup)
     job_params ||= Hash.new
 
-    if lookup.present?
-      job_params[:actual_url] = @uri_source.base_uri.to_s
-      Rails.logger.debug "Generating params for : #{lookup.inspect}"
-      noko_doc = Nokogiri::HTML(@uri_source) do |config|
-        config.noblanks.noent.noerror.nonet
-      end
-
-      [:title, :description, :location, :company, :logo].each { |job_attr|
-        # If lookup does have corresponding field, parse the doc
-        # Else, the corresponding job_param[:field] will remain vacant
-        if lookup.send( job_attr.to_s ).present?
-          attr_xpath = lookup.send(job_attr.to_s)
-
-          attr_node =
-            begin
-              noko_doc.at_xpath attr_xpath
-            rescue Nokogiri::SyntaxError => se
-              Rails.logger.debug "Failed xpath: #{attr_xpath} || URL: #{job_params[:actual_url]} || Other params: #{lookup.inspect}"
-              nil
-            end
-
-          if attr_node.present?
-            if job_attr == :logo
-              photo_url = attr_node.attribute('src').content
-              job_params[job_attr] = photo_url if photo_url.present?
-            else
-              job_params[job_attr] = Sanitize.clean(attr_node.content, Sanitize::Config::RESTRICTED)
-              .gsub(/\s+/, ' ')
-            end
-          else
-            job_params[job_attr] = nil
-          end
-        end
-      }
+    job_params[:actual_url] = @uri_source.base_uri.to_s
+    Rails.logger.debug "Generating params for : #{lookup.inspect}"
+    @noko_doc ||= Nokogiri::HTML(@uri_source) do |config|
+      config.noblanks.noent.noerror.nonet
     end
+
+    [:title, :description, :location, :company, :logo].each { |job_attr|
+      # If lookup does have corresponding field, parse the doc
+      # Else, the corresponding job_param[:field] will remain vacant
+      if (lookup.respond_to?(job_attr) && lookup.send( job_attr.to_s ).present?)
+        attr_xpath = lookup.send(job_attr.to_s)
+
+        attr_node =
+          begin
+            @noko_doc.at_xpath attr_xpath
+          rescue Nokogiri::SyntaxError => se
+            Rails.logger.debug "Failed xpath: #{attr_xpath} || URL: #{job_params[:actual_url]} || Other params: #{lookup.inspect}"
+            nil
+          end
+
+        if attr_node.present?
+          if job_attr == :logo
+            photo_url = attr_node.attribute('src').content
+            job_params[job_attr] = photo_url if photo_url.present?
+          else
+            job_params[job_attr] = Sanitize.clean(attr_node.content, Sanitize::Config::RESTRICTED)
+            .gsub(/\s+/, ' ')
+          end
+        else
+          job_params[job_attr] = nil
+        end
+      else
+        job_params[job_attr] = nil
+      end
+    }
 
     return job_params
   end
@@ -88,17 +88,25 @@ class JobUrlParser
     unless all_values_present?(params)
       top_lookups = Lookup.order_by(:other_domain_hits.desc).limit(5)
       top_lookups.each do |top_lookup|
-        params = generate_params_given_lookup top_lookup
+        params = fill_blanks_given_lookup(params, top_lookup)
 
         break if all_values_present? params
 
       end
 
       unless all_values_present?(params)
-        params = generate_params_given_lookup(Lookup.new(@@default_lookup_hash))
+        params = fill_blanks_given_lookup(params, Lookup.new(@@default_lookup_hash))
       end
     end
 
+    return params
+  end
+
+  def fill_blanks_given_lookup(params, given_lookup)
+    top_lookup_params = generate_params_given_lookup given_lookup
+    top_lookup_params.each do |k, v|
+      params[k] ||= top_lookup_params[k] if top_lookup_params[k].present?
+    end
     return params
   end
 
