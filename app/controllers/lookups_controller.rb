@@ -134,7 +134,7 @@ class LookupsController < ApplicationController
   protected
   def all_values_present?(job_params_hash)
     all_values_present = job_params_hash.reduce (true) { |memo, (k, v)|
-      if k == :logo
+      if [:logo, :company].include? k
         memo && true
       else
         memo && v.present?
