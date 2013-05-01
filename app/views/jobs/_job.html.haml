@@ -8,7 +8,7 @@
     %span.job_company_display.badge.badge-success
       = Sanitize.clean( full ? j.company : j.company.slice(0..20) ) if j.company.present?
     .job_location_display
-      = Sanitize.clean( full ? j.location : j.location.slice(0..50) )
+      = Sanitize.clean( full ? j.location : j.location.slice(0..50) ) if j.location.present?
       - if j.geo_code.present? && j.geo_code[0].present? && j.geo_code.present?
         %a{ href: "/?near=#{j.geo_code[0]},#{j.geo_code[1]}"}
           Search near this
@@ -26,6 +26,6 @@
         Share
       -if owner
         = link_to 'Destroy', j, :method => :delete, :data => { :confirm => 'Are you sure?' }
-      = link_to j.actual_url, target: '_blank' do
+      = link_to j.url, target: '_blank' do
         %i.icon-share-alt
         Apply

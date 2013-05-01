@@ -36,7 +36,12 @@ class Job
 
   def geocode_location
     Rails.logger.info 'Before saving job'
-    geo_task = GeocodeTask.new self
-    self.geo_code= geo_task.perform
+    if(self.location.present? && self.geo_code.blank?)
+      geo_task = GeocodeTask.new self
+      self.geo_code= geo_task.perform
+    else
+      Longo.create(reason: 'Location not found', job: self.attributes)
+    end
+
   end
 end
