@@ -19,7 +19,7 @@ class Lookup
 
   before_save :generate_domain
 
-  validates_presence_of :example_page, :company, :title, :description, :location
+  validates_presence_of :example_page, :title, :description, :location
   validates_format_of :example_page, :with => /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix
   
   #scope :active, where( domain: /[^(_d)]$/i )
