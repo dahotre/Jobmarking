@@ -4,7 +4,7 @@
       = Sanitize.clean( full ? j.title : j.title.slice(0..100) ) if j.title.present?
       %i.icon-link
     %br
-    = image_tag j.logo, class: 'job_logo' if j.logo.present?
+    = image_tag j.logo, class: (full ? 'job_logo_big' : 'job_logo') if j.logo.present?
     -if j.company.present?
       %span.job_company_display.badge.badge-success
         = Sanitize.clean( full ? j.company : j.company.slice(0..20) )
@@ -16,7 +16,7 @@
           %i.icon-map-marker
   -if j.description.present?
     .job_description_display
-      = Sanitize.clean( full ? j.description : j.description.slice(0..250)) + '...' if j.description.present?
+      = Sanitize.clean( full ? j.description : (j.description.slice(0..250) + '...') ) if j.description.present?
   -if show_actions
     .job_actions
       = link_to edit_job_path(j) do

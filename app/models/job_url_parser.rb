@@ -112,7 +112,7 @@ class JobUrlParser
 
   def all_values_present? hash
     hash.reduce (hash.length > 0) do |memo, (k, v)|
-      Rails.logger.info "Key : #{k} || Value : #{v}"
+      Rails.logger.debug "Key : #{k} || Value : #{v}"
       memo && v.present?
     end
   end
