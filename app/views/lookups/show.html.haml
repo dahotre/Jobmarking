@@ -1,21 +1,28 @@
-%p
-  %b Domain:
-  = @lookup.domain
-%p
-  %b Title:
-  = @lookup.title
-%p
-  %b Location:
-  = @lookup.location
-%p
-  %b Description:
-  = @lookup.description
-%p
-  %b Location:
-  = @lookup.location
-%p
-  %b Example Page:
-  = @lookup.example_page
+%div#jobs_params_preview.well
+  %p
+    %span.badge
+      %b Domain
+    = @lookup.domain
+  %p
+    %span.badge
+      %b Title
+    = @lookup.title
+  %p
+    %span.badge
+      %b Company
+    = @lookup.company
+  %p
+    %span.badge
+      %b Description
+    = @lookup.description
+  %p
+    %span.badge
+      %b Location
+    = @lookup.location
+  %p
+    %span.badge
+      %b Example Page
+    = @lookup.example_page
 
 = link_to 'Edit', edit_lookup_path(@lookup), :class => 'btn-info btn'
 = link_to 'Destroy', @lookup, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'btn btn-danger'
