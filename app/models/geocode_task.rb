@@ -22,10 +22,10 @@ class GeocodeTask
       elsif (result['status'] == 'UNKNOWN_ERROR')
         perform(--limit)
       else
-        Longo.create( :level => 'ERROR', :reason => 'Geocode error', :location => @location, :result => result )
+        Longo.create( :level => 'ERROR', :reason => 'Geocode error', :location => @location, :result => result, :t => DateTime.now.strftime )
       end
     else
-      Longo.create( :level => 'ERROR', :reason => 'Geocode error', :location => @location)
+      Longo.create( :level => 'ERROR', :reason => 'Geocode error', :location => @location, :t => DateTime.now.strftime)
     end
 
     return nil

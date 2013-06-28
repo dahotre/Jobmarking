@@ -40,7 +40,7 @@ class Job
       geo_task = GeocodeTask.new self
       self.geo_code= geo_task.perform
     else
-      Longo.create(reason: 'Location not found', job: self.attributes)
+      Longo.create(reason: 'Location not found', job: self.attributes, t: DateTime.now.strftime)
     end
 
   end

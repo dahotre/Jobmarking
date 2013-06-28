@@ -70,7 +70,8 @@ class LookupsController < ApplicationController
         old_longo = Longo.find_by(:url => @lookup.example_page, :reason => 'Failed XPath parse')
 
         if old_longo.blank?
-          Longo.create(:level => 'WARN', :reason => 'Failed XPath parse', :lookup => @lookup.attributes, :url => @lookup.example_page)
+          Longo.create(:level => 'WARN', :reason => 'Failed XPath parse',
+                       :lookup => @lookup.attributes, :url => @lookup.example_page, :t => DateTime.now.strftime)
         end
 
         format.html { redirect_to lookups_path, notice: 'Issue reported. Thanks for the help!'}
