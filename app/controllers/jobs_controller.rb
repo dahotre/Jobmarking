@@ -75,8 +75,8 @@ class JobsController < ApplicationController
       @job.user = current_user
     end
 
-    url_parser = JobUrlParser.new(@job.url)
-    @job.assign_attributes(url_parser.job_params)
+    job_params = JobUrlParser.new(@job.url).job_params
+    @job.assign_attributes job_params
 
     if @job.user == current_user
       old_job = Job.find_by(actual_url: @job.actual_url)
@@ -89,7 +89,12 @@ class JobsController < ApplicationController
 
     respond_to do |format|
       if @job.save
-        format.html { redirect_to @job, notice: 'Job was successfully created.' }
+        if job_params[:confidence].eql? 'high'
+          format.html { redirect_to @job, notice: 'Job was successfully created.' }
+        else
+          format.html { redirect_to edit_job_path(@job), notice: 'Please verify the details below.' }
+        end
+
         format.json { render json: @job, status: :created, location: @job }
       else
         format.html { render action: "new" }

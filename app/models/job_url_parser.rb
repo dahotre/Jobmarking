@@ -85,17 +85,23 @@ class JobUrlParser
   # Attempts to fill in blank job params if any
   def fill_blank_params(params)
 
+    params[confidence: 'high'] #Default confidence of parsing is high
+
     unless all_values_present?(params)
       top_lookups = Lookup.order_by(:other_domain_hits.desc).limit(5)
       top_lookups.each do |top_lookup|
         params = fill_blanks_given_lookup(params, top_lookup)
 
-        break if all_values_present? params
+        if all_values_present? params
+          params[confidence: 'medium']
+          break
+        end
 
       end
 
       unless all_values_present?(params)
         params = fill_blanks_given_lookup(params, Lookup.new(@@default_lookup_hash))
+        params[confidence: 'low'] #If I have to use the default parser, the confidence for parsing is low
       end
     end
 
